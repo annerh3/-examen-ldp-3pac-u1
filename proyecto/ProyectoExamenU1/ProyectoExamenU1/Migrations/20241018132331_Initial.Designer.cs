@@ -12,8 +12,8 @@ using ProyectoExamenU1.Database;
 namespace ProyectoExamenU1.Migrations
 {
     [DbContext(typeof(ProyectoExamenContext))]
-    [Migration("20241018102858_updateDb")]
-    partial class updateDb
+    [Migration("20241018132331_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -263,7 +263,6 @@ namespace ProyectoExamenU1.Migrations
                         .HasColumnName("state");
 
                     b.Property<string>("UpdatedBy")
-                        .IsRequired()
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("updated_by");
@@ -408,8 +407,7 @@ namespace ProyectoExamenU1.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "UpdateByUser")
                         .WithMany()
                         .HasForeignKey("UpdatedBy")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("CreateByUser");
 

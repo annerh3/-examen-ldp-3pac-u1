@@ -1,0 +1,15 @@
+meta {
+  name: DeleteUser
+  type: http
+  seq: 2
+}
+
+delete {
+  url: {{PATH}}/api/auth/delete/3ee92172-235d-4811-8187-85b939ff1768
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{TOKEN}}
+}

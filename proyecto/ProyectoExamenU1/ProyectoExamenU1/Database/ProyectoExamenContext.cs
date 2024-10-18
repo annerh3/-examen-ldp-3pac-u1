@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ProyectoExamenU1.Database.Configuration;
 using ProyectoExamenU1.Database.Entities;
+using ProyectoExamenU1.Helpers;
 using ProyectoExamenU1.Services.Interfaces;
 
 namespace ProyectoExamenU1.Database
@@ -29,8 +30,6 @@ namespace ProyectoExamenU1.Database
             //.Property(e => e.Type)   // y por que el nombre
             //.UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
-
-
             //Le decimos que nuestras tablas se crearan en esquema de security
             modelBuilder.HasDefaultSchema("security");
 
@@ -38,6 +37,13 @@ namespace ProyectoExamenU1.Database
             modelBuilder.Entity<IdentityUser>().ToTable("users");
             modelBuilder.Entity<IdentityRole>().ToTable("roles");
             modelBuilder.Entity<IdentityUserRole<string>>().ToTable("users_roles");
+
+            // Configurar la relación entre ApplicationUser y ApplicationUserRole
+            //modelBuilder.Entity<ApplicationUserRole>()
+            //    .HasOne(ur => ur.User) // Navegación a User
+            //    .WithMany(u => u.UserRoles) // Relación con la colección UserRoles
+            //    .HasForeignKey(ur => ur.UserId) // Clave foránea UserId en users_roles
+            //    .OnDelete(DeleteBehavior.Cascade); // Eliminar en cascada los roles al eliminar un usuario
 
             //Estos son los permisos
             modelBuilder.Entity<IdentityUserClaim<string>>().ToTable("users_claims");

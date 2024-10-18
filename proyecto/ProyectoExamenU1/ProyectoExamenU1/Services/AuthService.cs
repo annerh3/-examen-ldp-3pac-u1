@@ -1,5 +1,6 @@
 ﻿using BlogUNAH.API.Dtos.Auth;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProyectoExamenU1.Dtos.Common;
 using ProyectoExamenU1.Services.Interfaces;
@@ -13,18 +14,22 @@ namespace ProyectoExamenU1.Services
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
 
         public AuthService(
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
+            RoleManager<IdentityRole> roleManager,
             IConfiguration configuration
             )
         {
             this._signInManager = signInManager;
             this._userManager = userManager;
+            this._roleManager = roleManager;
             this._configuration = configuration;
         }
+
 
         public async Task<ResponseDto<LoginResponseDto>> LoginAsync(LoginDto dto)
         {
@@ -78,6 +83,49 @@ namespace ProyectoExamenU1.Services
             };
         
     }
+
+        public async Task<ResponseDto<IdentityUser>> DeleteAsync(Guid id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+
+            if (user == null)
+            {
+                return new ResponseDto<IdentityUser>
+                {
+                    StatusCode = 404,
+                    Status = false,
+                    Message = "Usuario no encontrado"
+                };
+            }
+
+            // Obtener roles asociados al usuario
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            // Eliminar el usuario de cada rol
+            foreach (var role in userRoles)
+            {
+                await _userManager.RemoveFromRoleAsync(user, role);
+            }
+
+            // Eliminar el usuario
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                return new ResponseDto<IdentityUser>
+                {
+                    StatusCode = 200,
+                    Status = true,
+                    Message = "Usuario eliminado exitosamente"
+                };
+            }
+
+            return new ResponseDto<IdentityUser>
+            {
+                StatusCode = 500,
+                Status = false,
+                Message = "No se pudo eliminar el usuario"
+            };
+        }
 
 
         private JwtSecurityToken GetToken(List<Claim> authClaims)

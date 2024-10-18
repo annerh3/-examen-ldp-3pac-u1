@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ProyectoExamenU1.Database.Entities;
 using ProyectoExamenU1.Helpers;
+using ProyectoExamenU1.Helpers.Users;
 
 namespace ProyectoExamenU1
 {
@@ -41,6 +42,9 @@ namespace ProyectoExamenU1
             services.AddTransient<IPermitionApplicationService, PermitionService>();
 
 
+            //services.AddIdentity<ApplicationUser, ApplicationRole>()
+            //.AddEntityFrameworkStores<ProyectoExamenContext>()
+            //.AddDefaultTokenProviders();
 
 
             // Agregando Identity
