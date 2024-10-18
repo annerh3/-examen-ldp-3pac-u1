@@ -1,0 +1,21 @@
+[
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "Type": "Vacaciones",
+    "Descriptions": "Permiso para vacaciones anuales",
+    "MaxDays": 15
+  },
+  {
+    "id": "7eae4c77-9984-4f77-b27c-89ae3e3b9297",
+    "Type": "Incapacidad Médica",
+    "Descriptions": "Permiso por incapacidad médica",
+    "MaxDays": 30
+  },
+  {
+    "id": "1cbead9c-29bc-4a8f-9cce-773a3ef51910",
+    "Type": "Permiso sin sueldo",
+    "Descriptions": "Permiso especial sin remuneración",
+    "MaxDays": 10
+  }
+]
+

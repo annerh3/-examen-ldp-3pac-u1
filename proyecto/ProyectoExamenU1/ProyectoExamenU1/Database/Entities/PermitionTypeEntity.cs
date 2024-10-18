@@ -11,6 +11,15 @@ namespace ProyectoExamenU1.Database.Entities
         [Required]
         [Column("type")]
         public string Type { get; set; }
+        [StringLength(450)]
+        [Required]
+        [Column("description")]
+        public string Descriptions { get; set; }
+
+        [Column("max_rest_days")]
+        public int MaxDays { get; set; }
+
+
         public virtual IdentityUser CreateByUser { get; set; }
         public virtual IdentityUser UpdateByUser { get; set; }
     }

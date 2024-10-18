@@ -82,12 +82,16 @@ namespace ProyectoExamenU1.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "permition_type",
+                name: "permition_application",
                 schema: "dbo",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    type = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false, collation: "SQL_Latin1_General_CP1_CI_AS"),
+                    start_date = table.Column<DateOnly>(type: "date", nullable: false),
+                    end_date = table.Column<DateOnly>(type: "date", nullable: false),
+                    reason = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
+                    permition_type_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    state = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     created_by = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
                     created_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     updated_by = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
@@ -95,16 +99,23 @@ namespace ProyectoExamenU1.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_permition_type", x => x.id);
+                    table.PrimaryKey("PK_permition_application", x => x.id);
                     table.ForeignKey(
-                        name: "FK_permition_type_users_created_by",
+                        name: "FK_permition_application_permition_application_permition_type_id",
+                        column: x => x.permition_type_id,
+                        principalSchema: "dbo",
+                        principalTable: "permition_application",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_permition_application_users_created_by",
                         column: x => x.created_by,
                         principalSchema: "security",
                         principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_permition_type_users_updated_by",
+                        name: "FK_permition_application_users_updated_by",
                         column: x => x.updated_by,
                         principalSchema: "security",
                         principalTable: "users",
@@ -206,48 +217,6 @@ namespace ProyectoExamenU1.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "permition_application",
-                schema: "dbo",
-                columns: table => new
-                {
-                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    start_date = table.Column<DateOnly>(type: "date", nullable: false),
-                    end_date = table.Column<DateOnly>(type: "date", nullable: false),
-                    reason = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    permition_type_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    state = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    created_by = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
-                    created_date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    updated_by = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
-                    updated_date = table.Column<DateTime>(type: "datetime2", maxLength: 450, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_permition_application", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_permition_application_permition_type_permition_type_id",
-                        column: x => x.permition_type_id,
-                        principalSchema: "dbo",
-                        principalTable: "permition_type",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_permition_application_users_created_by",
-                        column: x => x.created_by,
-                        principalSchema: "security",
-                        principalTable: "users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_permition_application_users_updated_by",
-                        column: x => x.updated_by,
-                        principalSchema: "security",
-                        principalTable: "users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_permition_application_created_by",
                 schema: "dbo",
@@ -264,18 +233,6 @@ namespace ProyectoExamenU1.Migrations
                 name: "IX_permition_application_updated_by",
                 schema: "dbo",
                 table: "permition_application",
-                column: "updated_by");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_permition_type_created_by",
-                schema: "dbo",
-                table: "permition_type",
-                column: "created_by");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_permition_type_updated_by",
-                schema: "dbo",
-                table: "permition_type",
                 column: "updated_by");
 
             migrationBuilder.CreateIndex(
@@ -351,10 +308,6 @@ namespace ProyectoExamenU1.Migrations
             migrationBuilder.DropTable(
                 name: "users_tokens",
                 schema: "security");
-
-            migrationBuilder.DropTable(
-                name: "permition_type",
-                schema: "dbo");
 
             migrationBuilder.DropTable(
                 name: "roles",

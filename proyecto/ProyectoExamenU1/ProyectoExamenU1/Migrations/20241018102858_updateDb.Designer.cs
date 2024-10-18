@@ -12,8 +12,8 @@ using ProyectoExamenU1.Database;
 namespace ProyectoExamenU1.Migrations
 {
     [DbContext(typeof(ProyectoExamenContext))]
-    [Migration("20241018041136_init")]
-    partial class init
+    [Migration("20241018102858_updateDb")]
+    partial class updateDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -241,8 +241,8 @@ namespace ProyectoExamenU1.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("created_date");
 
-                    b.Property<DateOnly>("EndDate")
-                        .HasColumnType("date")
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2")
                         .HasColumnName("end_date");
 
                     b.Property<Guid>("PermitionTypeId")
@@ -254,8 +254,8 @@ namespace ProyectoExamenU1.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasColumnName("reason");
 
-                    b.Property<DateOnly>("StartDate")
-                        .HasColumnType("date")
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2")
                         .HasColumnName("start_date");
 
                     b.Property<string>("State")
@@ -291,6 +291,9 @@ namespace ProyectoExamenU1.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
+                    b.Property<string>("CreateByUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)")
@@ -300,15 +303,26 @@ namespace ProyectoExamenU1.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("created_date");
 
+                    b.Property<string>("Descriptions")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("description");
+
+                    b.Property<int>("MaxDays")
+                        .HasColumnType("int")
+                        .HasColumnName("max_rest_days");
+
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
-                        .HasColumnName("type")
-                        .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+                        .HasColumnName("type");
+
+                    b.Property<string>("UpdateByUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UpdatedBy")
-                        .IsRequired()
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("updated_by");
@@ -320,9 +334,9 @@ namespace ProyectoExamenU1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatedBy");
+                    b.HasIndex("CreateByUserId");
 
-                    b.HasIndex("UpdatedBy");
+                    b.HasIndex("UpdateByUserId");
 
                     b.ToTable("permition_type", "dbo");
                 });
@@ -385,7 +399,7 @@ namespace ProyectoExamenU1.Migrations
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("ProyectoExamenU1.Database.Entities.PermitionTypeEntity", "PermitionType")
+                    b.HasOne("ProyectoExamenU1.Database.Entities.PermitionApplicationEntity", "PermitionType")
                         .WithMany()
                         .HasForeignKey("PermitionTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -408,14 +422,13 @@ namespace ProyectoExamenU1.Migrations
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "CreateByUser")
                         .WithMany()
-                        .HasForeignKey("CreatedBy")
+                        .HasForeignKey("CreateByUserId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "UpdateByUser")
                         .WithMany()
-                        .HasForeignKey("UpdatedBy")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("UpdateByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("CreateByUser");
 

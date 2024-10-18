@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using ProyectoExamenU1.Database.Entities;
+using ProyectoExamenU1.Helpers;
 
 namespace ProyectoExamenU1
 {
@@ -36,6 +38,7 @@ namespace ProyectoExamenU1
             //services.AddTransient<IPrestamoService, PrestamoService>();
             services.AddTransient<IAuditService, AuditService>();
             services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IPermitionApplicationService, PermitionService>();
 
 
 
@@ -69,7 +72,7 @@ namespace ProyectoExamenU1
 
             // Add AutoMapper
 
-            // services.AddAutoMapper(typeof(AutoMapperProfile));
+             services.AddAutoMapper(typeof(AutoMapperProfile));
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

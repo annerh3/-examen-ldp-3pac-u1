@@ -4,9 +4,9 @@ using ProyectoExamenU1.Database.Entities;
 
 namespace ProyectoExamenU1.Database.Configuration
 {
-    public class PermitionTypeConfiguration : IEntityTypeConfiguration<PermitionTypeEntity>
+    public class PermitionTypeConfiguration : IEntityTypeConfiguration<PermitionApplicationEntity>
     {
-        public void Configure(EntityTypeBuilder<PermitionTypeEntity> builder)
+        public void Configure(EntityTypeBuilder<PermitionApplicationEntity> builder)
         {
             builder.HasOne(e => e.CreateByUser)
                 .WithMany()
@@ -16,8 +16,8 @@ namespace ProyectoExamenU1.Database.Configuration
             builder.HasOne(e => e.UpdateByUser)
                 .WithMany()
                 .HasForeignKey(e => e.UpdatedBy)
-                .HasPrincipalKey(e => e.Id)
-                .IsRequired();
+                .HasPrincipalKey(e => e.Id);
+               // .IsRequired();
         }
     }
 }
