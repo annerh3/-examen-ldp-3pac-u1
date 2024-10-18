@@ -12,7 +12,7 @@ using ProyectoExamenU1.Database;
 namespace ProyectoExamenU1.Migrations
 {
     [DbContext(typeof(ProyectoExamenContext))]
-    [Migration("20241018040340_init")]
+    [Migration("20241018041136_init")]
     partial class init
     {
         /// <inheritdoc />

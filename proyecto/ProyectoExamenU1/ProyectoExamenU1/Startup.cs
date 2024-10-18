@@ -35,6 +35,7 @@ namespace ProyectoExamenU1
 
             //services.AddTransient<IPrestamoService, PrestamoService>();
             services.AddTransient<IAuditService, AuditService>();
+            services.AddTransient<IAuthService, AuthService>();
 
 
 
