@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProyectoExamenU1.Database;
 
@@ -11,9 +12,11 @@ using ProyectoExamenU1.Database;
 namespace ProyectoExamenU1.Migrations
 {
     [DbContext(typeof(ProyectoExamenContext))]
-    partial class ProyectoExamenContextModelSnapshot : ModelSnapshot
+    [Migration("20241018102858_updateDb")]
+    partial class updateDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -260,6 +263,7 @@ namespace ProyectoExamenU1.Migrations
                         .HasColumnName("state");
 
                     b.Property<string>("UpdatedBy")
+                        .IsRequired()
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("updated_by");
@@ -404,7 +408,8 @@ namespace ProyectoExamenU1.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "UpdateByUser")
                         .WithMany()
                         .HasForeignKey("UpdatedBy")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("CreateByUser");
 

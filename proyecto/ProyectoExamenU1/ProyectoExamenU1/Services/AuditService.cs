@@ -16,8 +16,19 @@ namespace ProyectoExamenU1.Services
 
         public string GetUserId()
         {
-            var idClaim = _httpContextAccessor.HttpContext
-                .User.Claims.Where(x => x.Type == "UserId").FirstOrDefault();
+            // si no hay http context es el seeder 
+            if (_httpContextAccessor.HttpContext == null || !_httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+            {
+                
+                return "Seeder-System";
+            }
+            // para normal
+            var idClaim = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "UserId");
+
+            if (idClaim == null)
+            {
+                throw new InvalidOperationException("No UserId claim present");
+            }
 
             return idClaim.Value;
         }

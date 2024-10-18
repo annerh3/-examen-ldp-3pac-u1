@@ -95,7 +95,7 @@ namespace ProyectoExamenU1.Database
 
         //public DbSet<ENTITY_CLASS> ENTITY_NAME { get; set; }
         public DbSet<PermitionApplicationEntity> ApplicationEntities { get; set; }
-        public DbSet<PermitionApplicationEntity> PermitionTypes { get; set; }
+        public DbSet<PermitionTypeEntity> PermitionTypes { get; set; }
 
     }
 }

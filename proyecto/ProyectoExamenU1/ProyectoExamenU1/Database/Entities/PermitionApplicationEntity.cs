@@ -10,12 +10,12 @@ namespace ProyectoExamenU1.Database.Entities
         [Display(Name = "start_date")]
         [MinLength(10, ErrorMessage = "La {0} debe ser valida")]
         [Column("start_date")]
-        public DateOnly StartDate { get; set; }
+        public DateTime StartDate { get; set; }
 
         [Display(Name = "Fecha de Finalizacion")]
         [MinLength(10, ErrorMessage = "La {0} debe ser valida")]
         [Column("end_date")]
-        public DateOnly EndDate { get; set; }
+        public DateTime EndDate { get; set; }
         [Display(Name = "Descripción")]
         [MinLength(10, ErrorMessage = "La {0} debe tener al menos {1} caracteres.")]
         [StringLength(250)]

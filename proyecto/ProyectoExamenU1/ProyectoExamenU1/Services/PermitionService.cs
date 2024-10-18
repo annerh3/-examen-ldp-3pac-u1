@@ -7,6 +7,7 @@ using ProyectoExamenU1.Database.Entities;
 using ProyectoExamenU1.Dtos.Common;
 using ProyectoExamenU1.Dtos.Permitions;
 using ProyectoExamenU1.Services.Interfaces;
+using System.Security.Claims;
 
 namespace ProyectoExamenU1.Services
 {
@@ -57,16 +58,18 @@ namespace ProyectoExamenU1.Services
                         throw new Exception("La tipo de permiso no existe.");
                     }
 
-                    if( dto.StartDate< dto.EndDate)
+                    if (dto.StartDate < dto.EndDate)
                     {
                         throw new Exception("La fecha no puede ser menos a la de salids");
                     }
 
+                     
                     int days = (dto.EndDate - dto.StartDate).Days;
 
-                    if (days > exist) {
-
-
+                    if (days > exist.MaxDays)
+                    {
+                        throw new Exception("No se puede pedir mas dias del maximo permitido por ley");
+                    }
 
                     _context.ApplicationEntities.Add(permitionEntity);
                     await _context.SaveChangesAsync();

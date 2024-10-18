@@ -16,8 +16,8 @@ namespace ProyectoExamenU1.Database.Configuration
             builder.HasOne(e => e.UpdateByUser)
                 .WithMany()
                 .HasForeignKey(e => e.UpdatedBy)
-                .HasPrincipalKey(e => e.Id)
-                .IsRequired();
+                .HasPrincipalKey(e => e.Id);
+              //  .IsRequired();
         }
     }
 }
