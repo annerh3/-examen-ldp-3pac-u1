@@ -88,6 +88,11 @@ namespace ProyectoExamenU1.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -138,7 +143,11 @@ namespace ProyectoExamenU1.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("users", "security");
+                    b.ToTable("AspNetUsers", "security");
+
+                    b.HasDiscriminator().HasValue("IdentityUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -322,6 +331,25 @@ namespace ProyectoExamenU1.Migrations
                     b.HasIndex("UpdatedBy");
 
                     b.ToTable("permition_type", "dbo");
+                });
+
+            modelBuilder.Entity("BlogUNAH.API.Helpers.Employee", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<DateOnly>("date_entry")
+                        .HasMaxLength(100)
+                        .HasColumnType("date");
+
+                    b.Property<string>("employee_name")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("0");
+
+                    b.ToTable("AspNetUsers", "security");
+
+                    b.HasDiscriminator().HasValue("Employee");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

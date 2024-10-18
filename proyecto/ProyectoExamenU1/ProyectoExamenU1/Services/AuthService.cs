@@ -1,4 +1,5 @@
 ﻿using BlogUNAH.API.Dtos.Auth;
+using BlogUNAH.API.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using ProyectoExamenU1.Dtos.Common;
@@ -11,13 +12,13 @@ namespace ProyectoExamenU1.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<Employee> _signInManager;
+        private readonly UserManager<Employee> _userManager;
         private readonly IConfiguration _configuration;
 
         public AuthService(
-            SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager,
+            SignInManager<Employee> signInManager,
+            UserManager<Employee> userManager,
             IConfiguration configuration
             )
         {

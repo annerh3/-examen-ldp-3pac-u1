@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using BlogUNAH.API.Helpers;
 
 namespace ProyectoExamenU1
 {
@@ -39,9 +40,9 @@ namespace ProyectoExamenU1
 
 
 
-
+   
             // Agregando Identity
-            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            services.AddIdentity<Employee, IdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
             }).AddEntityFrameworkStores<ProyectoExamenContext>()

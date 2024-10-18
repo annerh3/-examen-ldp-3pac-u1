@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using BlogUNAH.API.Helpers;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ProyectoExamenU1.Database.Configuration;
@@ -35,7 +36,19 @@ namespace ProyectoExamenU1.Database
             modelBuilder.HasDefaultSchema("security");
 
             //ASignamos nombres a nuestras tablas para no confundirnos
-            modelBuilder.Entity<IdentityUser>().ToTable("users");
+            modelBuilder.Entity<Employee>(entityTypeBuilder =>
+            {
+                entityTypeBuilder.ToTable("AspNetUsers");
+
+                entityTypeBuilder.Property(u => u.employee_name)
+                    .HasMaxLength(100)
+                    .HasDefaultValue(0);
+
+                entityTypeBuilder.Property(u => u.date_entry)
+                    .HasMaxLength(100);
+
+
+            });
             modelBuilder.Entity<IdentityRole>().ToTable("roles");
             modelBuilder.Entity<IdentityUserRole<string>>().ToTable("users_roles");
 
