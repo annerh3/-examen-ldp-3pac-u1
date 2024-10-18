@@ -18,7 +18,7 @@ namespace ProyectoExamenU1.Database.Entities
 
         [StringLength(450)]
         [Column("updated_by")]
-        public string UpdatedBy { get; set; }
+        public string? UpdatedBy { get; set; }
         [StringLength(450)]
         [Column("updated_date")]
         public DateTime UpdatedDate { get; set; }

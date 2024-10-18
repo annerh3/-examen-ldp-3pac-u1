@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using ProyectoExamenU1.Constants;
 using ProyectoExamenU1.Database.Entities;
+using ProyectoExamenU1.Services;
 using ProyectoExamenU1.Services.Interfaces;
 
 namespace ProyectoExamenU1.Database
@@ -14,13 +15,15 @@ namespace ProyectoExamenU1.Database
             ProyectoExamenContext context,
             ILoggerFactory loggerFactory,
             UserManager<IdentityUser> userManager,
-            RoleManager<IdentityRole> roleManager
+            RoleManager<IdentityRole> roleManager,
+            IAuditService auditService
+
             )
         {
             try
             {
                 await LoadRolesAndUSersAsync(userManager, roleManager, loggerFactory);
-                await LoadPermitionTypesAsync(loggerFactory, context, userManager);
+                await LoadPermitionTypesAsync(loggerFactory, context, userManager , auditService);
 
             }
             catch (Exception e)
@@ -103,7 +106,7 @@ namespace ProyectoExamenU1.Database
             }
         }
 
-        public static async Task LoadPermitionTypesAsync(ILoggerFactory loggerFactory, ProyectoExamenContext context, UserManager<IdentityUser> userManager)
+        public static async Task LoadPermitionTypesAsync(ILoggerFactory loggerFactory, ProyectoExamenContext context, UserManager<IdentityUser> userManager, IAuditService auditService)
         {
             try
             {
@@ -113,31 +116,29 @@ namespace ProyectoExamenU1.Database
 
                 if (!await context.PermitionTypes.AnyAsync())
                 {
-                    var user = await userManager.Users.FirstOrDefaultAsync(); ;
+                    var user = await userManager.Users.FirstOrDefaultAsync();
+                    var userId = user.Id;
                     if (user == null)
                     {
-                        user = new IdentityUser
+                        var user2 = new IdentityUser
                         {
                             UserName = "SeederUser",
                             Email = "seeder@example.com"
                         };
-                        var result = await userManager.CreateAsync(user, "SeederPassword123!");
-                        await userManager.AddToRoleAsync(user, RolesConstant.ADMIN);
-
+                        var result = await userManager.CreateAsync(user2, "SeederPassword123!");
+                        await userManager.AddToRoleAsync(user2, RolesConstant.ADMIN);
+                        userId = user2.Id;
                         if (!result.Succeeded)
                         {
-                            throw new Exception("fallo al crear el usuario de semilla");
+                            throw new Exception("Fallo al crear el usuario de semilla: " + string.Join(", ", result.Errors.Select(e => e.Description)));
                         }
                     }
-
-                    for (int i = 0; i < categories.Count; i++)
+                    var userIdr = auditService.GetUserId();
+                    var userExists = await context.Users.AnyAsync(u => u.Id == userId);
+                    if (!userExists)
                     {
-                        categories[i].CreatedBy = user.Id;
-                        categories[i].CreatedDate = DateTime.Now;
-                        categories[i].UpdatedBy = user.Id;
-                        categories[i].UpdatedDate = DateTime.Now;
+                        throw new Exception($"El usuario con ID {userId} no existe.");
                     }
-
                     context.AddRange(categories);
                     await context.SaveChangesAsync();
                 }

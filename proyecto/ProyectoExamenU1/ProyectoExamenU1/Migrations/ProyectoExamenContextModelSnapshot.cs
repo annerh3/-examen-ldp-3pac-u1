@@ -287,9 +287,6 @@ namespace ProyectoExamenU1.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    b.Property<string>("CreateByUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)")
@@ -315,9 +312,6 @@ namespace ProyectoExamenU1.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("type");
 
-                    b.Property<string>("UpdateByUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)")
@@ -330,9 +324,9 @@ namespace ProyectoExamenU1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreateByUserId");
+                    b.HasIndex("CreatedBy");
 
-                    b.HasIndex("UpdateByUserId");
+                    b.HasIndex("UpdatedBy");
 
                     b.ToTable("permition_type", "dbo");
                 });
@@ -395,7 +389,7 @@ namespace ProyectoExamenU1.Migrations
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("ProyectoExamenU1.Database.Entities.PermitionApplicationEntity", "PermitionType")
+                    b.HasOne("ProyectoExamenU1.Database.Entities.PermitionTypeEntity", "PermitionType")
                         .WithMany()
                         .HasForeignKey("PermitionTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -417,12 +411,12 @@ namespace ProyectoExamenU1.Migrations
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "CreateByUser")
                         .WithMany()
-                        .HasForeignKey("CreateByUserId")
+                        .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "UpdateByUser")
                         .WithMany()
-                        .HasForeignKey("UpdateByUserId")
+                        .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("CreateByUser");

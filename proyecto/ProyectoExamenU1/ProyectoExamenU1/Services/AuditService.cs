@@ -17,10 +17,10 @@ namespace ProyectoExamenU1.Services
         public string GetUserId()
         {
             // si no hay http context es el seeder 
-            if (_httpContextAccessor.HttpContext == null || !_httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+            if (_httpContextAccessor.HttpContext == null)
             {
                 
-                return "Seeder-System";
+                return "Seeder";
             }
             // para normal
             var idClaim = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "UserId");
