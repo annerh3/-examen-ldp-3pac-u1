@@ -25,9 +25,9 @@ namespace ProyectoExamenU1.Database
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.UseCollation("SQL_Latin1_General_CP1_CI_AS");
-            modelBuilder.Entity<PermitionTypeEntity>()   // por que usa una entidad
-            .Property(e => e.Type)   // y por que el nombre
-            .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            //modelBuilder.Entity<PermitionApplicationEntity>()   // por que usa una entidad
+            //.Property(e => e.Type)   // y por que el nombre
+            //.UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
 
 
@@ -95,7 +95,7 @@ namespace ProyectoExamenU1.Database
 
         //public DbSet<ENTITY_CLASS> ENTITY_NAME { get; set; }
         public DbSet<PermitionApplicationEntity> ApplicationEntities { get; set; }
-        public DbSet<PermitionTypeEntity> PermitionTypes { get; set; }
+        public DbSet<PermitionApplicationEntity> PermitionTypes { get; set; }
 
     }
 }

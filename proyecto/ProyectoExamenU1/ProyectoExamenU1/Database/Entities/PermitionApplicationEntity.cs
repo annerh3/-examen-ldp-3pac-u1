@@ -28,7 +28,7 @@ namespace ProyectoExamenU1.Database.Entities
         public Guid PermitionTypeId  { get; set; }
 
         [ForeignKey(nameof(PermitionTypeId))]
-        public virtual PermitionTypeEntity PermitionType { get; set; }
+        public virtual PermitionApplicationEntity PermitionType { get; set; }
 
 
 
