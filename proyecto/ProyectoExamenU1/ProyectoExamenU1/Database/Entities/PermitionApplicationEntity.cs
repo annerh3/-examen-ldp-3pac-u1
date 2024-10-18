@@ -9,22 +9,28 @@ namespace ProyectoExamenU1.Database.Entities
     {
         [Display(Name = "start_date")]
         [MinLength(10, ErrorMessage = "La {0} debe ser valida")]
-        [Column("end_date")]
-        public DateTime StartDate { get; set; }
+        [Column("start_date")]
+        public DateOnly StartDate { get; set; }
 
         [Display(Name = "Fecha de Finalizacion")]
         [MinLength(10, ErrorMessage = "La {0} debe ser valida")]
         [Column("end_date")]
-        public DateTime EndDate { get; set; }
+        public DateOnly EndDate { get; set; }
         [Display(Name = "Descripción")]
         [MinLength(10, ErrorMessage = "La {0} debe tener al menos {1} caracteres.")]
         [StringLength(250)]
         [Column("reason")]
         public string Reason { get; set; }
 
+
+
         [Column("permition_type_id")]
-        [ForeignKey(nameof(PermitionTypeID))]
-        public virtual PermitionTypeEntity PermitionTypeID { get; set; }
+        public Guid PermitionTypeId  { get; set; }
+
+        [ForeignKey(nameof(PermitionTypeId))]
+        public virtual PermitionTypeEntity PermitionType { get; set; }
+
+
 
         [Column("state")]
         public string State { get; set; }

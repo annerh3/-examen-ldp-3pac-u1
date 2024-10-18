@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProyectoExamenU1.Constants;
 
-namespace ProyectoExamenU1.Database.Entities
+namespace ProyectoExamenU1.Database
 {
     public class ProyectoExamenSeeder
     {
@@ -17,7 +17,7 @@ namespace ProyectoExamenU1.Database.Entities
             try
             {
                 await LoadRolesAndUSersAsync(userManager, roleManager, loggerFactory);
-                
+
             }
             catch (Exception e)
             {
@@ -37,7 +37,7 @@ namespace ProyectoExamenU1.Database.Entities
                 {
                     //Evitamos tener los string quemados
                     await roleManager.CreateAsync(new IdentityRole(RolesConstant.ADMIN));
-                    await roleManager.CreateAsync(new IdentityRole(RolesConstant.HUMAN_RES));
+                    await roleManager.CreateAsync(new IdentityRole(RolesConstant.HUMAN_RESOURCES));
                     await roleManager.CreateAsync(new IdentityRole(RolesConstant.EMPLOYEE));
                 }
 
@@ -55,37 +55,37 @@ namespace ProyectoExamenU1.Database.Entities
                         UserName = "human_r@gmail.com",
                     };
 
-                    var normalEmployee1 = new IdentityUser // Empleados Normales
-                    {
-                        Email = "employee1@gmail.com",
-                        UserName = "employee1@gmail.com",
-                    };
 
-                    var normalEmployee2 = new IdentityUser
-                    {
-                        Email = "employee2@gmail.com",
-                        UserName = "employee2@gmail.com",
-                    };
+                    int employeeAmount = 5; // cantidad de empleados
 
-                    var normalEmployee3 = new IdentityUser
-                    {
-                        Email = "employee2@gmail.com",
-                        UserName = "employee3@gmail.com",
-                    };
+                    List<IdentityUser> employees = new List<IdentityUser>();
 
-                    await userManager.CreateAsync(userAdmin, "Temporal01*"); 
+                    //para crear n cantidad de empleados.  Anner
+                    for (int i = 1; i <= employeeAmount; i++)
+                    {
+                        var employee = new IdentityUser
+                        {
+                            Email = $"employee{i}@gmail.com",
+                            UserName = $"employee{i}@gmail.com"
+                        };
+
+                        employees.Add(employee);
+                        await userManager.CreateAsync(employee, "Temporal01*");
+                    }
+
+                    await userManager.CreateAsync(userAdmin, "Temporal01*");
                     await userManager.CreateAsync(userHumanResources, "Temporal01*");
 
-                    await userManager.CreateAsync(normalEmployee1, "Temporal01*"); 
-                    await userManager.CreateAsync(normalEmployee2, "Temporal01*");
-                    await userManager.CreateAsync(normalEmployee3, "Temporal01*");
+                    
 
                     await userManager.AddToRoleAsync(userAdmin, RolesConstant.ADMIN);
-                    await userManager.AddToRoleAsync(userHumanResources, RolesConstant.HUMAN_RES);
+                    await userManager.AddToRoleAsync(userHumanResources, RolesConstant.HUMAN_RESOURCES);
 
-                    await userManager.AddToRoleAsync(normalEmployee1, RolesConstant.EMPLOYEE);
-                    await userManager.AddToRoleAsync(normalEmployee2, RolesConstant.EMPLOYEE);
-                    await userManager.AddToRoleAsync(normalEmployee3, RolesConstant.EMPLOYEE);
+                    // Asignar rol a los empleados en la variable empleados 
+                    foreach (var employee in employees)
+                    {
+                        await userManager.AddToRoleAsync(employee, RolesConstant.EMPLOYEE);
+                    }
                 }
 
             }
