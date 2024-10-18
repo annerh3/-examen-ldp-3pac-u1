@@ -67,8 +67,8 @@ namespace ProyectoExamenU1.Database
                 }
             }
         }
-        public override Task<int> SaveChangesAsync(
-            CancellationToken cancellationToken = default)
+        public override async Task<int> SaveChangesAsync(
+                 CancellationToken cancellationToken = default)
         {
             var entries = ChangeTracker
                 .Entries()
@@ -77,6 +77,21 @@ namespace ProyectoExamenU1.Database
                     e.State == EntityState.Modified
                 ));
 
+            string userId = _auditService.GetUserId();
+
+            // ver si es el seedeer que molesta
+            if (userId == null || userId == "Seeder")
+            {
+              
+                var firstUser = await this.Set<IdentityUser>().FirstOrDefaultAsync();
+
+                
+                if (firstUser != null)
+                {
+                    userId = firstUser.Id;
+                }
+            }
+
             foreach (var entry in entries)
             {
                 var entity = entry.Entity as BaseEntity;
@@ -84,18 +99,18 @@ namespace ProyectoExamenU1.Database
                 {
                     if (entry.State == EntityState.Added)
                     {
-                        entity.CreatedBy = _auditService.GetUserId();
+                        entity.CreatedBy = userId;
                         entity.CreatedDate = DateTime.Now;
                     }
-                    else
+                    else if (entry.State == EntityState.Modified)
                     {
-                        entity.UpdatedBy = _auditService.GetUserId();
+                        entity.UpdatedBy = userId;
                         entity.UpdatedDate = DateTime.Now;
                     }
                 }
             }
 
-            return base.SaveChangesAsync(cancellationToken);
+            return await base.SaveChangesAsync(cancellationToken);
         }
 
 

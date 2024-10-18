@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using ProyectoExamenU1;
 using ProyectoExamenU1.Database;
+using ProyectoExamenU1.Services.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 var startup = new Startup(builder.Configuration);
@@ -21,8 +22,9 @@ using (var scope = app.Services.CreateScope())
         var context = services.GetRequiredService<ProyectoExamenContext>();
         var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        var auditService = services.GetRequiredService<IAuditService>();
 
-        await ProyectoExamenSeeder.LoadDataAsync(context, loggerFactory, userManager, roleManager);
+        await ProyectoExamenSeeder.LoadDataAsync(context, loggerFactory, userManager, roleManager,auditService );
     }
     catch (Exception e)
     {

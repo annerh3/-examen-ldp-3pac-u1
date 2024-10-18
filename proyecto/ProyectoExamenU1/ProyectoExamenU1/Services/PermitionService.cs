@@ -46,6 +46,7 @@ namespace ProyectoExamenU1.Services
             {
                 try
                 {
+                    
                     var permitionEntity = _mapper.Map<PermitionApplicationEntity>(dto);
 
                     Guid typeId = permitionEntity.PermitionTypeId;
@@ -71,7 +72,23 @@ namespace ProyectoExamenU1.Services
                         throw new Exception("No se puede pedir mas dias del maximo permitido por ley");
                     }
 
-                    _context.ApplicationEntities.Add(permitionEntity);
+
+                    var permition = new PermitionApplicationEntity
+                    {
+                        Id = Guid.NewGuid(),
+                        CreatedBy = _auditService.GetUserId(),
+                        CreatedDate = DateTime.Now,
+                        EndDate = dto.EndDate,
+                        Reason = dto.Reason,
+                        StartDate = dto.StartDate,
+                        State = dto.State,
+                        PermitionTypeId = dto.PermitionTypeId,
+                        UpdatedBy = null,
+                        UpdatedDate = DateTime.Now
+                    };
+
+
+                    _context.ApplicationEntities.Add(permition);
                     await _context.SaveChangesAsync();
                     await transaction.CommitAsync();
 
